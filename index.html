@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse fonctionnelle ABC — Outil éducatif</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#6a1b9a">
+<style>
+  :root{
+    --violet:#6a1b9a;
+    --violet-dark:#4a148c;
+    --bg:#f3f4f7;
+    --card:#ffffff;
+    --text:#2f2f35;
+    --muted:#6d6d78;
+    --border:#dedee6;
+    --blue-bg:#eef4ff;
+    --blue-br:#bfd1f4;
+    --green-bg:#effaf2;
+    --green-br:#bfe2c8;
+    --amber-bg:#fff9eb;
+    --amber-br:#ead9a1;
+    --red-bg:#fff1f1;
+    --red-br:#edc0c0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  button,input,select,textarea{font:inherit}
+  .app{max-width:1180px;margin:0 auto;padding-bottom:40px}
+  .header{background:linear-gradient(135deg,var(--violet),#7e35ae);color:#fff;padding:28px 20px 24px;text-align:center}
+  .header .eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.82}
+  .header h1{margin:5px 0 7px;font-size:30px;line-height:1.1}
+  .header p{margin:0 auto;max-width:760px;font-size:14px;line-height:1.5;opacity:.92}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:16px 18px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:30}
+  .toolbar .spacer{flex:1}
+  .btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:650}
+  .btn.primary{background:var(--violet);color:#fff}.btn.primary:hover{background:var(--violet-dark)}
+  .btn.secondary{background:#ececf2;color:#333}.btn.secondary:hover{background:#dfdfe7}
+  .btn.blue{background:#3f7fca;color:#fff}.btn.green{background:#2c9b61;color:#fff}.btn.red{background:#c94a4a;color:#fff}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:#444}
+  .btn.small{padding:7px 10px;font-size:12px}
+  .content{padding:18px}
+  .grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+  .card{background:var(--card);border:1px solid #ececf1;border-radius:16px;padding:18px;box-shadow:0 2px 9px rgba(0,0,0,.055);margin-bottom:16px}
+  .card h2,.card h3{margin:0 0 14px}.card h2{font-size:19px}.card h3{font-size:16px}
+  .subtle{color:var(--muted);font-size:13px;line-height:1.45}
+  .field{margin-bottom:14px}
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#41414a}
+  input[type=text],input[type=date],input[type=time],select,textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 11px;background:#fbfbfd;color:#333}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--violet);background:#fff;box-shadow:0 0 0 3px rgba(106,27,154,.08)}
+  textarea{min-height:86px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .abc{border-radius:13px;padding:14px;border:1px solid}
+  .abc.a{background:var(--blue-bg);border-color:var(--blue-br)}
+  .abc.b{background:var(--green-bg);border-color:var(--green-br)}
+  .abc.c{background:var(--amber-bg);border-color:var(--amber-br)}
+  .abc .helper{font-size:12px;color:#666;margin:-2px 0 8px;line-height:1.4}
+  .goodbad{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .example{font-size:12px;border-radius:9px;padding:8px 9px;line-height:1.35}
+  .example.bad{background:#fff3f3;color:#8d3d3d}.example.good{background:#f0faf2;color:#2b6f3a}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;border-radius:999px;padding:7px 9px;font-size:12px}
+  .chip input{margin:0}
+  .section-note{background:#faf8fd;border-left:4px solid var(--violet);padding:10px 12px;border-radius:8px;font-size:12.5px;color:#555;margin-bottom:14px}
+  .profile-list{display:flex;flex-direction:column;gap:8px}
+  .profile-item{display:flex;gap:8px;align-items:center;border:1px solid var(--border);border-radius:11px;padding:9px;background:#fff}
+  .profile-item.active{border-color:var(--violet);box-shadow:0 0 0 2px rgba(106,27,154,.08)}
+  .profile-main{flex:1;min-width:0;cursor:pointer}
+  .profile-name{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .profile-meta{font-size:11px;color:var(--muted);margin-top:2px}
+  .journal-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .journal-tools input,.journal-tools select{width:auto;min-width:150px}
+  .obs{border:1px solid var(--border);border-radius:13px;padding:14px;margin-bottom:10px;background:#fff}
+  .obs-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+  .obs-title{font-weight:800;font-size:14px}.obs-meta{font-size:12px;color:var(--muted);margin-top:2px}
+  .obs-actions{display:flex;gap:6px}
+  .obs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .obs-block{border-radius:9px;padding:9px;border:1px solid #e7e7ec}
+  .obs-block .k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#777;margin-bottom:4px}
+  .obs-block .v{font-size:13px;white-space:pre-wrap;line-height:1.4}
+  .obs-extra{font-size:12px;color:#555;margin-top:8px;line-height:1.45}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.tag{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0ebf5;color:#5e287d}
+  .empty{padding:22px;text-align:center;color:#999;font-size:14px}
+  .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .metric{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.metric .n{font-size:22px;font-weight:850;color:var(--violet)}.metric .l{font-size:11px;color:var(--muted);margin-top:2px}
+  .summary-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .summary-box{border:1px solid var(--border);border-radius:12px;padding:12px}
+  .summary-box ul{margin:8px 0 0 18px;padding:0}.summary-box li{margin:4px 0;font-size:13px}
+  .privacy{background:#fff9ed;border:1px solid #eed8aa;border-radius:12px;padding:12px;font-size:12.5px;line-height:1.5;color:#66512f}
+  .footer{text-align:center;color:#777;font-size:12px;padding:18px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#27272d;color:#fff;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:100}.toast.show{opacity:1}
+  .hidden{display:none!important}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}.sidebar{order:0}.row,.row3,.obs-grid,.summary-cols{grid-template-columns:1fr}.summary-grid{grid-template-columns:1fr 1fr}.toolbar{position:static}.goodbad{grid-template-columns:1fr}}
+  @media print{
+    @page{margin:12mm 12mm 18mm}
+    body{background:#fff;padding-bottom:10mm}
+    .toolbar,.sidebar,.no-print,.btn,.toast{display:none!important}
+    .app{max-width:none}.content{padding:0}.grid{display:block}
+    .card{box-shadow:none;border:0;padding:8px 0}
+    .header{background:#fff;color:#000;text-align:left;padding:0 0 14px;border-bottom:2px solid #000}
+    .header .eyebrow{display:none}.header h1{font-size:24px}.header p{color:#333}
+    .obs{break-inside:avoid}.summary-grid{grid-template-columns:repeat(4,1fr)}
+    .footer{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      padding:3mm 0 1mm;
+      margin:0;
+      border-top:.2mm solid #ddd;
+      background:#fff;
+      color:#777;
+      font-size:9pt;
+      text-align:center;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="eyebrow">Outil d'observation et d'aide à l'analyse</div>
+    <h1>Analyse fonctionnelle ABC</h1>
+    <p>Observer plusieurs situations, repérer des régularités et formuler des hypothèses prudentes sur ce qui peut influencer ou maintenir un comportement.</p>
+  </header>
+
+  <div class="toolbar no-print">
+    <button class="btn primary" onclick="nouveauProfil()">+ Nouveau dossier</button>
+    <button class="btn secondary" onclick="imprimer()">🖨 Imprimer / PDF</button>
+    <button class="btn blue" onclick="exportJSON()">⬇ Sauvegarde JSON</button>
+    <button class="btn secondary" onclick="document.getElementById('importFile').click()">⬆ Importer JSON</button>
+    <input id="importFile" type="file" accept="application/json,.json" class="hidden" onchange="importJSON(event)">
+    <button class="btn green" onclick="exportCSV()">⬇ Export CSV</button>
+    <div class="spacer"></div>
+    <button class="btn ghost" onclick="afficherAide()">? Mode d'emploi</button>
+  </div>
+
+  <main class="content">
+    <div class="grid">
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Dossiers</h3>
+          <div class="subtle" style="margin-bottom:10px">Les données restent enregistrées sur ce navigateur.</div>
+          <div id="profileList" class="profile-list"></div>
+        </div>
+
+        <div class="card">
+          <h3>Dossier actif</h3>
+          <div class="field">
+            <label>Identifiant / initiales</label>
+            <input id="profileName" type="text" placeholder="Ex. A., Jeune 01" oninput="saveProfileMeta()">
+          </div>
+          <div class="field">
+            <label>Repères utiles (facultatif)</label>
+            <textarea id="profileNotes" placeholder="Ex. communication, besoins spécifiques, repères connus..." oninput="saveProfileMeta()"></textarea>
+          </div>
+          <div class="privacy">Pour une version publique ou un ordinateur partagé, privilégier des initiales ou un identifiant interne. Ne pas saisir d'informations nominatives inutiles.</div>
+          <button class="btn red small" style="margin-top:12px" onclick="supprimerProfilActif()">Supprimer ce dossier</button>
+        </div>
+      </aside>
+
+      <section>
+        <div class="card" id="helpCard" style="display:none">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:start">
+            <div>
+              <h2>Mode d'emploi — Comprendre la démarche d'analyse fonctionnelle</h2>
+              <div class="subtle">L'analyse fonctionnelle cherche à mieux comprendre dans quelles situations un comportement apparaît, ce qui le précède et ce qui se passe ensuite. Elle ne consiste pas à attribuer une intention à l'enfant ni à poser un diagnostic.</div>
+            </div>
+            <button class="btn ghost small" onclick="afficherAide(false)">Fermer</button>
+          </div>
+
+          <div class="section-note" style="margin-top:14px">
+            <strong>Principe général :</strong> on observe plusieurs situations comparables, on décrit des faits concrets, puis on recherche des régularités. Une seule observation ne permet pas de conclure. L'objectif est de formuler des hypothèses utiles pour adapter l'environnement et les réponses éducatives.
+          </div>
+
+          <h3 style="margin-top:18px">1. Commencer par observer sans interpréter</h3>
+          <div class="subtle">Décrire ce qui est réellement visible ou connu : lieu, activité, personnes présentes, changement récent, bruit, silence, éclairage, attente, fatigue connue, retour de visite, etc. Éviter les formulations qui supposent déjà une cause, comme « il cherche à provoquer » ou « il est en surcharge ».</div>
+
+          <h3 style="margin-top:16px">2. Renseigner les trois éléments ABC</h3>
+          <div class="section-note">
+            <strong>A — Antécédent :</strong> ce qui se passe juste avant le comportement. Il peut s'agir d'une consigne, d'une attente, d'un refus, d'un changement, d'une interaction, d'un bruit, d'un retrait d'objet, d'une transition…<br><br>
+            <strong>B — Comportement :</strong> ce que l'enfant fait concrètement. Utiliser des verbes d'action et des éléments observables : « crie », « insulte », « frappe la porte », « se bouche les oreilles », « quitte la pièce », « se balance », etc. Lorsque c'est possible, préciser la fréquence, la durée et l'intensité.<br><br>
+            <strong>C — Conséquence :</strong> ce qui se passe immédiatement après : réaction des adultes ou du groupe, arrêt ou maintien de la demande, accès à un objet, éloignement de la situation, retour au calme, poursuite du comportement, etc.
+          </div>
+
+          <h3 style="margin-top:16px">3. Répéter les observations</h3>
+          <div class="subtle">L'intérêt de l'outil apparaît lorsque plusieurs observations sont enregistrées. On peut alors repérer si certains contextes reviennent souvent, si le même type de comportement apparaît dans des circonstances proches et quelles conséquences suivent régulièrement ces situations.</div>
+
+          <h3 style="margin-top:16px">4. Formuler une ou plusieurs hypothèses fonctionnelles</h3>
+          <div class="subtle">Une hypothèse fonctionnelle est une piste de compréhension, pas une certitude. Elle cherche à répondre à la question : <strong>« Qu'est-ce que ce comportement semble permettre à l'enfant d'obtenir, d'éviter, de communiquer ou de réguler dans cette situation ? »</strong> Plusieurs hypothèses peuvent coexister et évoluer avec les observations.</div>
+          <div class="section-note" style="margin-top:8px">
+            Exemples de pistes : échapper à une demande ou une situation, obtenir une interaction, accéder à une activité ou un objet, communiquer un besoin ou un inconfort, rechercher ou réduire certaines stimulations. Si les données sont insuffisantes, choisir <strong>« Incertain à ce stade »</strong> est une réponse adaptée.
+          </div>
+
+          <h3 style="margin-top:16px">5. Utiliser la synthèse pour chercher des régularités</h3>
+          <div class="subtle">La synthèse automatique aide à repérer les éléments les plus souvent retrouvés dans les observations. Elle ne démontre pas une relation de cause à effet. Elle sert de support à la réflexion de l'équipe et doit être confrontée à la connaissance du jeune, à son mode de communication, à son développement, à son état de santé et aux autres évaluations disponibles.</div>
+
+          <h3 style="margin-top:16px">6. Transformer l'analyse en ajustements concrets</h3>
+          <div class="subtle">Une hypothèse n'a d'intérêt que si elle permet de tester des adaptations : modifier une consigne, anticiper une transition, ajuster l'environnement, proposer un moyen de communication, prévoir une pause, modifier la réponse de l'adulte, etc. Les effets de ces changements peuvent ensuite être observés et comparés dans le temps.</div>
+
+          <h3 style="margin-top:16px">Exemple simple</h3>
+          <div class="section-note">
+            <strong>A :</strong> à 18 h 30, dans un espace bruyant, l'éducateur annonce l'arrêt de la console et le passage au repas.<br>
+            <strong>B :</strong> le jeune crie « non », frappe deux fois la porte et quitte la pièce pendant environ 3 minutes.<br>
+            <strong>C :</strong> la demande est suspendue et un éducateur l'accompagne dans un espace plus calme.<br>
+            <strong>Après plusieurs situations similaires :</strong> l'équipe peut explorer notamment une hypothèse d'évitement de la transition, de difficulté de communication ou de régulation liée au contexte. Il faut ensuite tester des adaptations et continuer à observer.
+          </div>
+
+          <h3 style="margin-top:16px">Points de vigilance</h3>
+          <div class="subtle">
+            • Ne pas chercher une « fonction » définitive à partir d'une seule situation.<br>
+            • Ne pas confondre description et interprétation.<br>
+            • Un même comportement peut avoir des fonctions différentes selon le contexte.<br>
+            • Plusieurs facteurs peuvent agir en même temps.<br>
+            • Toujours envisager aussi les besoins de communication, la douleur ou l'inconfort, le développement, les particularités sensorielles, les expériences vécues et le contexte relationnel.<br>
+            • L'outil soutient l'analyse professionnelle ; il ne remplace pas une évaluation clinique, médicale ou spécialisée lorsqu'elle est nécessaire.
+          </div>
+
+          <div class="privacy" style="margin-top:16px"><strong>Confidentialité :</strong> les données sont enregistrées localement dans ce navigateur. Sur un ordinateur partagé, utiliser de préférence des initiales ou un identifiant interne et éviter les informations nominatives inutiles.</div>
+        </div>
+
+        <div class="card">
+          <h2 id="formTitle">Nouvelle observation</h2>
+          <input type="hidden" id="editingId">
+
+          <div class="row3">
+            <div class="field"><label>Date</label><input type="date" id="dateObs"></div>
+            <div class="field"><label>Heure</label><input type="time" id="heureObs"></div>
+            <div class="field"><label>Lieu / contexte</label><input type="text" id="lieu" placeholder="Ex. repas, retour de visite, activité..."></div>
+          </div>
+
+          <div class="row">
+            <div class="field"><label>Personnes présentes</label><input type="text" id="personnes" placeholder="Ex. 2 éducateurs, groupe de 6 jeunes..."></div>
+            <div class="field"><label>Activité / demande en cours</label><input type="text" id="activite" placeholder="Ex. ranger, attendre, se préparer..."></div>
+          </div>
+
+          <div class="field">
+            <label>Éléments de contexte présents avant la situation</label>
+            <div class="section-note">Cocher de préférence des éléments concrets, observables ou connus, sans interpréter leur effet sur le comportement.</div>
+            <div class="chips" id="vulnerabilites">
+              <label class="chip"><input type="checkbox" value="Fatigue">Fatigue</label>
+              <label class="chip"><input type="checkbox" value="Faim">Faim</label>
+              <label class="chip"><input type="checkbox" value="Douleur / inconfort">Douleur / inconfort</label>
+              <label class="chip"><input type="checkbox" value="Sommeil perturbé">Sommeil perturbé</label>
+              <label class="chip"><input type="checkbox" value="Changement imprévu">Changement imprévu</label>
+              <label class="chip"><input type="checkbox" value="Retour de visite / événement familial">Retour de visite / événement familial</label>
+              <label class="chip"><input type="checkbox" value="Environnement bruyant / nombreux sons">Environnement bruyant / nombreux sons</label>
+              <label class="chip"><input type="checkbox" value="Environnement très silencieux / peu de sons">Environnement très silencieux / peu de sons</label>
+              <label class="chip"><input type="checkbox" value="Éclairage intense ou clignotant">Éclairage intense / clignotant</label>
+              <label class="chip"><input type="checkbox" value="Éclairage faible / pénombre">Éclairage faible / pénombre</label>
+              <label class="chip"><input type="checkbox" value="Espace très fréquenté ou forte proximité">Espace très fréquenté / forte proximité</label>
+              <label class="chip"><input type="checkbox" value="Espace vide / isolement inhabituel">Espace vide / isolement inhabituel</label>
+              <label class="chip"><input type="checkbox" value="Multiples sollicitations simultanées">Multiples sollicitations simultanées</label>
+              <label class="chip"><input type="checkbox" value="Odeurs marquées">Odeurs marquées</label>
+              <label class="chip"><input type="checkbox" value="Conflit antérieur">Conflit antérieur</label>
+              <label class="chip"><input type="checkbox" value="Attente">Attente</label>
+              <label class="chip"><input type="checkbox" value="Transition">Transition</label>
+            </div>
+            <input type="text" id="vulnAutre" placeholder="Autre élément de contexte..." style="margin-top:8px">
+          </div>
+
+          <div class="abc a field">
+            <label>(A) Antécédent — Que s'est-il passé juste avant ?</label>
+            <div class="helper">Décrire un fait concret : consigne, refus, bruit, interaction, attente, changement, retrait d'un objet, transition...</div>
+            <textarea id="antecedent" placeholder="Ex. L'éducatrice lui demande d'éteindre la console et annonce le passage au repas."></textarea>
+          </div>
+
+          <div class="abc b field">
+            <label>(B) Comportement — Description observable et mesurable</label>
+            <div class="helper">Utiliser des verbes d'action et, si possible, préciser fréquence, durée ou intensité.</div>
+            <textarea id="comportement" placeholder="Ex. Crie « non », frappe deux fois la porte, jette sa chaussure puis marche rapidement dans le couloir pendant 3 minutes."></textarea>
+            <div class="goodbad">
+              <div class="example bad"><strong>À éviter :</strong> « Il est agressif », « il provoque », « il fait une crise ».</div>
+              <div class="example good"><strong>Préférer :</strong> « crie », « insulte », « frappe », « s'agite », « quitte la pièce », « se bouche les oreilles »...</div>
+            </div>
+            <div class="row3" style="margin-top:10px">
+              <div><label>Fréquence</label><input id="frequence" type="text" placeholder="Ex. 3 fois"></div>
+              <div><label>Durée</label><input id="duree" type="text" placeholder="Ex. 5 min"></div>
+              <div><label>Intensité</label><select id="intensite"><option value="Faible">Faible</option><option value="Modérée" selected>Modérée</option><option value="Forte">Forte</option><option value="Très forte">Très forte</option></select></div>
+            </div>
+          </div>
+
+          <div class="abc c field">
+            <label>(C) Conséquence — Que s'est-il passé juste après ?</label>
+            <div class="row3">
+              <div><label>Réponse de l'environnement</label><textarea id="reponseEnv" placeholder="Ex. L'éducateur retire la consigne et accompagne le jeune au calme."></textarea></div>
+              <div><label>Ce que l'enfant obtient / évite</label><textarea id="obtientEvite" placeholder="Ex. La demande est interrompue, accès à un espace calme."></textarea></div>
+              <div><label>Effet observé</label><textarea id="effet" placeholder="Ex. Les cris diminuent après 2 min, puis il revient au groupe."></textarea></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Hypothèse(s) fonctionnelle(s) à explorer</label>
+            <div class="section-note">Ne pas chercher à « conclure » après une seule observation. Plusieurs hypothèses peuvent être cochées.</div>
+            <div class="chips" id="fonctions">
+              <label class="chip"><input type="checkbox" value="Échapper / éviter une demande ou situation">Échapper / éviter</label>
+              <label class="chip"><input type="checkbox" value="Obtenir une interaction / attention">Obtenir interaction / attention</label>
+              <label class="chip"><input type="checkbox" value="Accéder à un objet / une activité">Accéder à objet / activité</label>
+              <label class="chip"><input type="checkbox" value="Régulation / stimulation sensorielle">Régulation / sensoriel</label>
+              <label class="chip"><input type="checkbox" value="Communiquer un besoin / inconfort">Communiquer besoin / inconfort</label>
+              <label class="chip"><input type="checkbox" value="Incertain à ce stade">Incertain</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Observations complémentaires / éléments à vérifier</label>
+            <textarea id="obsComp" placeholder="Ex. douleur possible, compréhension de la consigne à vérifier, contexte inhabituel..."></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" onclick="enregistrerObservation()" id="saveBtn">Enregistrer l'observation</button>
+            <button class="btn secondary hidden" onclick="annulerEdition()" id="cancelEditBtn">Annuler la modification</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Synthèse des observations</h2>
+          <div class="summary-grid">
+            <div class="metric"><div class="n" id="mObs">0</div><div class="l">observations</div></div>
+            <div class="metric"><div class="n" id="mForte">0</div><div class="l">intensité forte / très forte</div></div>
+            <div class="metric"><div class="n" id="mVuln">0</div><div class="l">facteurs de vulnérabilité repérés</div></div>
+            <div class="metric"><div class="n" id="mHyp">0</div><div class="l">hypothèses différentes cochées</div></div>
+          </div>
+          <div class="summary-cols">
+            <div class="summary-box"><strong>Facteurs de contexte les plus fréquents</strong><ul id="topVuln"><li>Aucune donnée</li></ul></div>
+            <div class="summary-box"><strong>Hypothèses les plus fréquemment cochées</strong><ul id="topFunc"><li>Aucune donnée</li></ul></div>
+          </div>
+          <div class="section-note" style="margin-top:12px">Cette synthèse met en évidence des régularités descriptives. Elle ne constitue pas, à elle seule, une conclusion clinique ou fonctionnelle.</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+            <h2 style="margin:0">Journal des observations</h2>
+            <div class="journal-tools no-print">
+              <input type="date" id="filterFrom" onchange="renderAll()" title="À partir du">
+              <input type="date" id="filterTo" onchange="renderAll()" title="Jusqu'au">
+              <select id="filterIntensity" onchange="renderAll()"><option value="">Toutes intensités</option><option>Faible</option><option>Modérée</option><option>Forte</option><option>Très forte</option></select>
+              <button class="btn ghost small" onclick="resetFilters()">Réinitialiser</button>
+            </div>
+          </div>
+          <div id="journal"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="footer">Auteur : Menad Malek — Éducateur spécialisé</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY='abc_tool_v2';
+let state=loadState();
+let activeProfileId=state.activeProfileId || null;
+let draftTimer=null;
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function todayISO(){const d=new Date();return d.toISOString().slice(0,10)}
+function timeHHMM(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)return JSON.parse(raw)}catch(e){}return{profiles:[],activeProfileId:null,draft:{}}}
+function saveState(){state.activeProfileId=activeProfileId;localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function profile(){return state.profiles.find(p=>p.id===activeProfileId)||null}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
+function escapeHTML(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function nl(v){return escapeHTML(v).replace(/\n/g,'<br>')}
+
+function init(){
+  if(!state.profiles.length){const id=uid();state.profiles.push({id,name:'Jeune 01',notes:'',observations:[],created:new Date().toISOString()});activeProfileId=id;saveState()}
+  if(!activeProfileId || !profile())activeProfileId=state.profiles[0].id;
+  document.getElementById('dateObs').value=todayISO();
+  document.getElementById('heureObs').value=timeHHMM();
+  bindDraftAutosave();
+  loadProfileMeta();
+  loadDraft();
+  renderAll();
+}
+
+function nouveauProfil(){
+  const base='Jeune '+String(state.profiles.length+1).padStart(2,'0');
+  const nom=prompt('Identifiant du nouveau dossier :',base);
+  if(nom===null)return;
+  const id=uid();state.profiles.push({id,name:(nom.trim()||base),notes:'',observations:[],created:new Date().toISOString()});activeProfileId=id;state.draft={};saveState();loadProfileMeta();resetForm(false);renderAll();showToast('Nouveau dossier créé')
+}
+function setActiveProfile(id){saveDraft();activeProfileId=id;saveState();loadProfileMeta();resetForm(false);loadDraft();renderAll()}
+function supprimerProfilActif(){const p=profile();if(!p)return;if(!confirm(`Supprimer le dossier « ${p.name} » et toutes ses observations ?`))return;state.profiles=state.profiles.filter(x=>x.id!==p.id);delete state.draft[p.id];activeProfileId=state.profiles[0]?.id||null;if(!activeProfileId){const id=uid();state.profiles.push({id,name:'Jeune 01',notes:'',observations:[],created:new Date().toISOString()});activeProfileId=id}saveState();loadProfileMeta();resetForm(false);renderAll();showToast('Dossier supprimé')}
+function saveProfileMeta(){const p=profile();if(!p)return;p.name=document.getElementById('profileName').value.trim()||'Sans nom';p.notes=document.getElementById('profileNotes').value;saveState();renderProfiles()}
+function loadProfileMeta(){const p=profile();document.getElementById('profileName').value=p?.name||'';document.getElementById('profileNotes').value=p?.notes||''}
+function renderProfiles(){const el=document.getElementById('profileList');el.innerHTML=state.profiles.map(p=>`<div class="profile-item ${p.id===activeProfileId?'active':''}"><div class="profile-main" onclick="setActiveProfile('${p.id}')"><div class="profile-name">${escapeHTML(p.name)}</div><div class="profile-meta">${p.observations.length} observation${p.observations.length>1?'s':''}</div></div></div>`).join('')}
+
+function checkedValues(containerId){return [...document.querySelectorAll(`#${containerId} input[type=checkbox]:checked`)].map(x=>x.value)}
+function setChecked(containerId,vals=[]){document.querySelectorAll(`#${containerId} input[type=checkbox]`).forEach(x=>x.checked=vals.includes(x.value))}
+
+function collectForm(){return{
+  date:document.getElementById('dateObs').value,
+  heure:document.getElementById('heureObs').value,
+  lieu:document.getElementById('lieu').value.trim(),
+  personnes:document.getElementById('personnes').value.trim(),
+  activite:document.getElementById('activite').value.trim(),
+  vulnerabilites:checkedValues('vulnerabilites'),
+  vulnAutre:document.getElementById('vulnAutre').value.trim(),
+  antecedent:document.getElementById('antecedent').value.trim(),
+  comportement:document.getElementById('comportement').value.trim(),
+  frequence:document.getElementById('frequence').value.trim(),
+  duree:document.getElementById('duree').value.trim(),
+  intensite:document.getElementById('intensite').value,
+  reponseEnv:document.getElementById('reponseEnv').value.trim(),
+  obtientEvite:document.getElementById('obtientEvite').value.trim(),
+  effet:document.getElementById('effet').value.trim(),
+  fonctions:checkedValues('fonctions'),
+  obsComp:document.getElementById('obsComp').value.trim()
+}}
+function fillForm(o){
+  document.getElementById('dateObs').value=o.date||todayISO();document.getElementById('heureObs').value=o.heure||timeHHMM();document.getElementById('lieu').value=o.lieu||'';document.getElementById('personnes').value=o.personnes||'';document.getElementById('activite').value=o.activite||'';setChecked('vulnerabilites',o.vulnerabilites||[]);document.getElementById('vulnAutre').value=o.vulnAutre||'';document.getElementById('antecedent').value=o.antecedent||'';document.getElementById('comportement').value=o.comportement||'';document.getElementById('frequence').value=o.frequence||'';document.getElementById('duree').value=o.duree||'';document.getElementById('intensite').value=o.intensite||'Modérée';document.getElementById('reponseEnv').value=o.reponseEnv||'';document.getElementById('obtientEvite').value=o.obtientEvite||'';document.getElementById('effet').value=o.effet||'';setChecked('fonctions',o.fonctions||[]);document.getElementById('obsComp').value=o.obsComp||''
+}
+function resetForm(clearDraft=true){document.getElementById('editingId').value='';document.getElementById('formTitle').textContent='Nouvelle observation';document.getElementById('saveBtn').textContent="Enregistrer l'observation";document.getElementById('cancelEditBtn').classList.add('hidden');fillForm({date:todayISO(),heure:timeHHMM(),intensite:'Modérée'});if(clearDraft){delete state.draft[activeProfileId];saveState()}}
+function enregistrerObservation(){const p=profile();if(!p)return;const data=collectForm();if(!data.antecedent&&!data.comportement&&!data.reponseEnv&&!data.obtientEvite&&!data.effet){showToast('Renseigne au moins un élément ABC.');return}const eid=document.getElementById('editingId').value;if(eid){const i=p.observations.findIndex(o=>o.id===eid);if(i>=0)p.observations[i]={...p.observations[i],...data,updated:new Date().toISOString()};showToast('Observation modifiée')}else{p.observations.unshift({id:uid(),...data,created:new Date().toISOString()});showToast('Observation enregistrée')}saveState();resetForm(true);renderAll()}
+function editerObservation(id){const o=profile()?.observations.find(x=>x.id===id);if(!o)return;fillForm(o);document.getElementById('editingId').value=id;document.getElementById('formTitle').textContent="Modifier l'observation";document.getElementById('saveBtn').textContent='Enregistrer les modifications';document.getElementById('cancelEditBtn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})}
+function annulerEdition(){resetForm(true)}
+function supprimerObservation(id){const p=profile();if(!p)return;if(!confirm('Supprimer cette observation ?'))return;p.observations=p.observations.filter(o=>o.id!==id);saveState();renderAll();showToast('Observation supprimée')}
+
+function filteredObs(){const p=profile();if(!p)return[];const f=document.getElementById('filterFrom').value,t=document.getElementById('filterTo').value,int=document.getElementById('filterIntensity').value;return p.observations.filter(o=>(!f||o.date>=f)&&(!t||o.date<=t)&&(!int||o.intensite===int))}
+function resetFilters(){document.getElementById('filterFrom').value='';document.getElementById('filterTo').value='';document.getElementById('filterIntensity').value='';renderAll()}
+function renderJournal(){const el=document.getElementById('journal');const arr=filteredObs();if(!arr.length){el.innerHTML='<div class="empty">Aucune observation pour ces critères.</div>';return}el.innerHTML=arr.map(o=>{
+  const vul=[...(o.vulnerabilites||[]),...(o.vulnAutre?[o.vulnAutre]:[])];const cons=[o.reponseEnv?`Réponse : ${o.reponseEnv}`:'',o.obtientEvite?`Obtient / évite : ${o.obtientEvite}`:'',o.effet?`Effet : ${o.effet}`:''].filter(Boolean).join('\n');
+  return `<div class="obs"><div class="obs-head"><div><div class="obs-title">${escapeHTML(o.date||'')} ${escapeHTML(o.heure||'')}${o.lieu?' — '+escapeHTML(o.lieu):''}</div><div class="obs-meta">${o.personnes?'Présents : '+escapeHTML(o.personnes):''}${o.activite?' • Activité/demande : '+escapeHTML(o.activite):''}</div></div><div class="obs-actions no-print"><button class="btn ghost small" onclick="editerObservation('${o.id}')">Modifier</button><button class="btn red small" onclick="supprimerObservation('${o.id}')">Supprimer</button></div></div>
+  <div class="obs-grid"><div class="obs-block"><div class="k">A — Antécédent</div><div class="v">${nl(o.antecedent||'—')}</div></div><div class="obs-block"><div class="k">B — Comportement</div><div class="v">${nl(o.comportement||'—')}</div>${o.frequence||o.duree?`<div class="obs-extra">${o.frequence?'Fréquence : '+escapeHTML(o.frequence):''}${o.frequence&&o.duree?' • ':''}${o.duree?'Durée : '+escapeHTML(o.duree):''}</div>`:''}</div><div class="obs-block"><div class="k">C — Conséquence</div><div class="v">${nl(cons||'—')}</div></div></div>
+  <div class="tags">${vul.map(v=>`<span class="tag">${escapeHTML(v)}</span>`).join('')}${(o.fonctions||[]).map(v=>`<span class="tag">Hyp. : ${escapeHTML(v)}</span>`).join('')}<span class="tag">Intensité : ${escapeHTML(o.intensite||'')}</span></div>${o.obsComp?`<div class="obs-extra"><strong>Notes :</strong> ${nl(o.obsComp)}</div>`:''}</div>`}).join('')}
+
+function counts(items){const m={};items.forEach(x=>m[x]=(m[x]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1])}
+function renderSummary(){const arr=profile()?.observations||[];document.getElementById('mObs').textContent=arr.length;document.getElementById('mForte').textContent=arr.filter(o=>['Forte','Très forte'].includes(o.intensite)).length;const vul=arr.flatMap(o=>[...(o.vulnerabilites||[]),...(o.vulnAutre?[o.vulnAutre]:[])]);document.getElementById('mVuln').textContent=new Set(vul).size;const fun=arr.flatMap(o=>o.fonctions||[]);document.getElementById('mHyp').textContent=new Set(fun).size;const top=(id,data)=>{const el=document.getElementById(id);const c=counts(data).slice(0,5);el.innerHTML=c.length?c.map(([k,n])=>`<li>${escapeHTML(k)} — <strong>${n}</strong></li>`).join(''):'<li>Aucune donnée</li>'};top('topVuln',vul);top('topFunc',fun)}
+function renderAll(){renderProfiles();renderJournal();renderSummary()}
+
+function bindDraftAutosave(){['dateObs','heureObs','lieu','personnes','activite','vulnAutre','antecedent','comportement','frequence','duree','intensite','reponseEnv','obtientEvite','effet','obsComp'].forEach(id=>document.getElementById(id).addEventListener('input',scheduleDraft));document.querySelectorAll('#vulnerabilites input,#fonctions input').forEach(x=>x.addEventListener('change',scheduleDraft))}
+function scheduleDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(saveDraft,350)}
+function saveDraft(){if(!activeProfileId)return;state.draft[activeProfileId]={...collectForm(),editingId:document.getElementById('editingId').value};saveState()}
+function loadDraft(){const d=state.draft?.[activeProfileId];if(!d)return;fillForm(d);if(d.editingId){document.getElementById('editingId').value=d.editingId;document.getElementById('formTitle').textContent="Modifier l'observation";document.getElementById('saveBtn').textContent='Enregistrer les modifications';document.getElementById('cancelEditBtn').classList.remove('hidden')}}
+
+function exportJSON(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});downloadBlob(blob,'analyse_fonctionnelle_abc_sauvegarde.json')}
+function importJSON(ev){const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!data||!Array.isArray(data.profiles))throw new Error();if(!confirm('Importer cette sauvegarde remplacera les données actuellement enregistrées sur ce navigateur. Continuer ?'))return;state=data;activeProfileId=state.activeProfileId||state.profiles[0]?.id||null;saveState();loadProfileMeta();resetForm(false);loadDraft();renderAll();showToast('Sauvegarde importée')}catch(e){alert('Fichier JSON non reconnu.')}};r.readAsText(f);ev.target.value=''}
+function exportCSV(){const p=profile();if(!p||!p.observations.length){showToast('Aucune observation à exporter.');return}const head=['Date','Heure','Lieu','Personnes','Activité/demande','Vulnérabilités','Antécédent','Comportement','Fréquence','Durée','Intensité','Réponse environnement','Obtient/évite','Effet observé','Hypothèses','Notes'];const rows=p.observations.map(o=>[o.date,o.heure,o.lieu,o.personnes,o.activite,[...(o.vulnerabilites||[]),o.vulnAutre||''].filter(Boolean).join(' | '),o.antecedent,o.comportement,o.frequence,o.duree,o.intensite,o.reponseEnv,o.obtientEvite,o.effet,(o.fonctions||[]).join(' | '),o.obsComp]);const csv=[head,...rows].map(r=>r.map(csvCell).join(';')).join('\n');downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),`analyse_abc_${safeName(p.name)}.csv`)}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function safeName(v){return String(v||'dossier').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'_')}
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function imprimer(){window.print()}
+function afficherAide(force){const c=document.getElementById('helpCard');const show=force===false?false:c.style.display==='none';c.style.display=show?'block':'none';if(show)c.scrollIntoView({behavior:'smooth',block:'start'})}
+
+window.addEventListener('beforeunload',saveDraft);
+init();
+</script>
+</body>
+</html>
