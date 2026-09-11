@@ -1,0 +1,77 @@
+LICENCE D’UTILISATION DES OUTILS — MALEK MENAD
+Version 2.0 — 2026
+
+Copyright © 2026 Malek MENAD. Tous droits réservés.
+
+1. USAGE PERSONNEL GRATUIT
+
+Les outils peuvent être consultés et utilisés gratuitement à titre strictement
+personnel, privé et non commercial.
+
+La consultation, la découverte et l’essai des outils sont également autorisés
+gratuitement.
+
+2. USAGE PROFESSIONNEL OU INSTITUTIONNEL
+
+Toute utilisation effective des outils dans un cadre professionnel,
+institutionnel, associatif, éducatif, social, médico-social, sanitaire,
+scolaire ou de formation nécessite l’autorisation préalable de Malek MENAD.
+
+Cette autorisation peut notamment préciser les outils concernés, le cadre
+d’utilisation, la durée, les éventuelles adaptations et les conditions de
+déploiement.
+
+La simple consultation ou présentation des outils afin d’en évaluer l’intérêt
+ne vaut pas autorisation d’usage professionnel.
+
+3. REVENTE ET EXPLOITATION COMMERCIALE
+
+La revente des outils est interdite.
+
+Sont également interdits, sans autorisation écrite préalable de Malek MENAD :
+
+- la commercialisation directe ou indirecte des outils ;
+- leur intégration dans une offre payante, un logiciel, une plateforme ou une
+  prestation commerciale ;
+- leur location, sous-licence ou mise à disposition payante ;
+- toute exploitation commerciale du code ou d’une version dérivée.
+
+4. COPIE, MODIFICATION ET REDISTRIBUTION
+
+Sauf autorisation écrite préalable, il est interdit de :
+
+- copier ou reproduire le code afin d’héberger une version distincte ;
+- modifier ou adapter le code pour diffusion ;
+- redistribuer les fichiers ou le code source ;
+- réhéberger les outils sur un autre site, serveur ou plateforme ;
+- supprimer ou modifier la mention de l’auteur ;
+- présenter les outils comme étant la création d’un tiers.
+
+5. DONNÉES ET CONFIDENTIALITÉ
+
+Les outils sont fournis comme supports de pratique. Leur mise à disposition ne
+constitue pas une certification de conformité à une politique interne, au RGPD
+ou à toute autre exigence réglementaire.
+
+Lorsqu’un organisme souhaite les utiliser avec des données personnelles, il lui
+appartient de vérifier les conditions d’utilisation dans son propre
+environnement et d’obtenir, le cas échéant, les validations internes
+nécessaires.
+
+6. RESSOURCES DE TIERS
+
+Certaines fonctionnalités peuvent utiliser des ressources provenant de
+services ou banques externes. Ces ressources restent soumises à leurs propres
+licences et conditions d’utilisation.
+
+7. ABSENCE DE GARANTIE
+
+Les outils sont fournis en l’état. Ils ne remplacent pas les évaluations,
+protocoles, décisions ou logiciels institutionnels requis dans les situations
+où ceux-ci sont nécessaires.
+
+8. AUTORISATIONS
+
+Pour toute demande d’utilisation professionnelle, institutionnelle,
+d’adaptation, d’intégration, de redistribution ou d’exploitation commerciale,
+une autorisation préalable de Malek MENAD est nécessaire.
