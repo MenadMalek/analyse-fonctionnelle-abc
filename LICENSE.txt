@@ -1,15 +1,20 @@
 LICENCE D’UTILISATION DES OUTILS — MALEK MENAD
-Version 2.0 — 2026
+Version 2.1 — 2026
 
 Copyright © 2026 Malek MENAD. Tous droits réservés.
+
+Le caractère public du dépôt et l’accès gratuit à l’outil ne constituent ni une
+cession de droits de propriété intellectuelle, ni une autorisation générale de
+copie, modification, redistribution, réhébergement, intégration ou exploitation
+professionnelle ou commerciale.
 
 1. USAGE PERSONNEL GRATUIT
 
 Les outils peuvent être consultés et utilisés gratuitement à titre strictement
 personnel, privé et non commercial.
 
-La consultation, la découverte et l’essai des outils sont également autorisés
-gratuitement.
+La consultation, la découverte, la démonstration et l’essai des outils afin d’en
+évaluer l’intérêt sont également autorisés gratuitement.
 
 2. USAGE PROFESSIONNEL OU INSTITUTIONNEL
 
@@ -18,36 +23,52 @@ institutionnel, associatif, éducatif, social, médico-social, sanitaire,
 scolaire ou de formation nécessite l’autorisation préalable de Malek MENAD.
 
 Cette autorisation peut notamment préciser les outils concernés, le cadre
-d’utilisation, la durée, les éventuelles adaptations et les conditions de
-déploiement.
+d’utilisation, la durée, le nombre d’utilisateurs ou de postes, les éventuelles
+adaptations et les conditions de déploiement.
 
-La simple consultation ou présentation des outils afin d’en évaluer l’intérêt
-ne vaut pas autorisation d’usage professionnel.
+La simple consultation, présentation ou démonstration des outils afin d’en
+évaluer l’intérêt ne vaut pas autorisation d’usage professionnel.
 
-3. REVENTE ET EXPLOITATION COMMERCIALE
+3. REVENTE, INTÉGRATION ET EXPLOITATION COMMERCIALE
 
 La revente des outils est interdite.
 
 Sont également interdits, sans autorisation écrite préalable de Malek MENAD :
 
 - la commercialisation directe ou indirecte des outils ;
-- leur intégration dans une offre payante, un logiciel, une plateforme ou une
-  prestation commerciale ;
+- leur intégration totale ou partielle dans une offre payante, un logiciel, une
+  application, une plateforme, un service numérique ou une prestation ;
+- la reprise de leur code, de leur interface ou de leurs éléments originaux dans
+  un autre produit ou service ;
 - leur location, sous-licence ou mise à disposition payante ;
-- toute exploitation commerciale du code ou d’une version dérivée.
+- toute exploitation commerciale du code ou d’une version adaptée ou dérivée.
 
-4. COPIE, MODIFICATION ET REDISTRIBUTION
+4. COPIE, MODIFICATION, ADAPTATION ET REDISTRIBUTION
 
 Sauf autorisation écrite préalable, il est interdit de :
 
-- copier ou reproduire le code afin d’héberger une version distincte ;
-- modifier ou adapter le code pour diffusion ;
-- redistribuer les fichiers ou le code source ;
-- réhéberger les outils sur un autre site, serveur ou plateforme ;
-- supprimer ou modifier la mention de l’auteur ;
-- présenter les outils comme étant la création d’un tiers.
+- copier ou reproduire le code afin d’héberger ou de publier une version
+  distincte ;
+- modifier, adapter, traduire ou transformer le code en vue de sa diffusion ou
+  de son intégration dans un autre outil ;
+- redistribuer les fichiers ou le code source, en tout ou partie ;
+- réhéberger les outils sur un autre site, serveur, dépôt ou plateforme ;
+- supprimer, masquer ou modifier la mention de l’auteur ou les informations de
+  licence ;
+- présenter les outils ou leurs éléments originaux comme étant la création d’un
+  tiers.
 
-5. DONNÉES ET CONFIDENTIALITÉ
+5. PROPRIÉTÉ INTELLECTUELLE ET ÉLÉMENTS PRÉEXISTANTS
+
+Les droits revendiqués portent notamment sur le code, les textes originaux,
+l’organisation, la présentation, les interfaces et les éléments graphiques ou
+fonctionnels originaux créés par Malek MENAD.
+
+La présente licence ne revendique aucun monopole sur les concepts, méthodes,
+référentiels ou connaissances préexistants qui peuvent être mobilisés par les
+outils, ni sur les ressources appartenant à des tiers.
+
+6. DONNÉES ET CONFIDENTIALITÉ
 
 Les outils sont fournis comme supports de pratique. Leur mise à disposition ne
 constitue pas une certification de conformité à une politique interne, au RGPD
@@ -58,20 +79,32 @@ appartient de vérifier les conditions d’utilisation dans son propre
 environnement et d’obtenir, le cas échéant, les validations internes
 nécessaires.
 
-6. RESSOURCES DE TIERS
+7. RESSOURCES DE TIERS
 
 Certaines fonctionnalités peuvent utiliser des ressources provenant de
 services ou banques externes. Ces ressources restent soumises à leurs propres
-licences et conditions d’utilisation.
+licences, droits et conditions d’utilisation.
 
-7. ABSENCE DE GARANTIE
+8. ABSENCE DE GARANTIE
 
 Les outils sont fournis en l’état. Ils ne remplacent pas les évaluations,
 protocoles, décisions ou logiciels institutionnels requis dans les situations
 où ceux-ci sont nécessaires.
 
-8. AUTORISATIONS
+9. DÉPÔT PUBLIC ET FONCTIONNALITÉS GITHUB
 
-Pour toute demande d’utilisation professionnelle, institutionnelle,
-d’adaptation, d’intégration, de redistribution ou d’exploitation commerciale,
-une autorisation préalable de Malek MENAD est nécessaire.
+La publication du code dans un dépôt GitHub public permet sa consultation et les
+usages découlant des fonctionnalités et conditions de la plateforme GitHub.
+Elle n’accorde toutefois aucune licence supplémentaire de réutilisation,
+d’intégration, de redistribution, de réhébergement ou d’exploitation en dehors
+des droits qui résultent nécessairement de ces conditions et fonctionnalités.
+
+10. AUTORISATIONS
+
+Pour toute demande d’utilisation professionnelle ou institutionnelle,
+d’adaptation, d’intégration, de redistribution, de réhébergement ou
+d’exploitation commerciale, une autorisation écrite préalable de Malek MENAD
+est nécessaire.
+
+Toute autorisation accordée dans un cas déterminé ne vaut pas autorisation
+générale pour d’autres usages, outils, versions ou bénéficiaires.
